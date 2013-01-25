@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+
+shopt -s extglob
+
+BUILDERDIR="$(dirname "$0")"
+
+# variables needed later.
+start_dir=`pwd`
+go_install_dir="$HOME/go"
+go_download_url="http://go.googlecode.com/files/go1.0.3.linux-amd64.tar.gz"
+
+# functions
+msg() {
+    echo -e "\033[1;32m-->\033[0m $0:" $*
+}
+
+die() {
+    msg $*
+    exit 1
+}
+
+move_to_approot() {
+    [ -n "$SERVICE_APPROOT" ] && cd $SERVICE_APPROOT
+}
+
+install_go() {
+
+    # normally don't need this, but helpful if you want to install a new version of go lang.
+    # msg "Remove old go directory."
+    # rm -rf $go_install_dir
+
+    if [ ! -d $go_install_dir ] ; then
+        msg "building go @ $go_install_dir"
+
+        msg "Make sure $go_install_dir exists and if not create it."
+        mkdir -p $go_install_dir
+
+        msg "downloading go lang from ($go_download_url) and saving it to ($start_dir/go.tar.gz)"
+        curl -L -o $start_dir/go.tar.gz $go_download_url
+
+        wget -O - $go_download_url | tar -C $go_install_dir --strip-components=1 -zxf -
+        [ $? -eq 0 ] || die "can't fetch golang installer"
+
+    else
+        msg "golang already exists @ $go_install_dir , skipping install."
+    fi
+}
+
+
+build_profile(){
+    cat > $start_dir/profile << EOF
+export GOPATH=~/current
+export GOROOT=$go_install_dir
+export GOBIN="$GOPATH/bin"
+export PATH="$GOROOT/bin:$GOBIN:$PATH"
+EOF
+
+}
+
+install_application() {
+
+    msg "change directories to $start_dir"
+    cd $start_dir
+
+    msg "source the profile"
+    source $start_dir/profile
+    
+    msg "moving $start_dir/profile to ~/"
+    mv $start_dir/profile ~/
+
+    # Use ~/code and ~/current like the regular python service for better compatibility
+    msg "installing application to ~/current/ from $start_dir"
+    rsync -avH --delete --exclude "data" --exclude "README.rst" --exclude "golang" * ~/current/
+}
+
+compile_application(){
+    go install $SERVICE_CONFIG_BUILD_PACKAGE
+}
+
+# lets get started.
+
+msg "Step 0: getting ready for build::"
+move_to_approot
+
+msg "Step 1: install go::"
+install_go
+
+msg "Step 2: build profile::"
+build_profile
+
+msg "Step 3: install application::"
+install_application
+
+msg "Step 4: Complile application::"
+compile_application
+
+msg "All done..."
