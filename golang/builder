@@ -48,7 +48,7 @@ install_go() {
 
 
 build_profile(){
-    cat > $start_dir/profile << EOF
+    cat > $start_dir/profile << 'EOF'
 export GOPATH="$HOME/current"
 export GOROOT=$go_install_dir
 export GOBIN="$GOPATH/bin"
