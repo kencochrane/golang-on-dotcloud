@@ -12,7 +12,7 @@ This is still very early beta so use with caution, and let us know if you have a
 
 Version
 =======
-GO: 1.0.3 
+GO: 1.1
 
 How to use
 ==========
