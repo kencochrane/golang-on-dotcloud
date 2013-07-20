@@ -2,7 +2,7 @@
 golang-on-dotcloud
 ==================
 
-Do you have a GO application that you want to run on dotCloud? If so, you have come to the right place. dotCloud doesn't support GO as a native service, but with this custom service recipe you can still use dotCloud for all of your GO needs.
+Do you have a Go application that you want to run on dotCloud? If so, you have come to the right place. dotCloud doesn't support Go as a native service, but with this custom service recipe you can still use dotCloud for all of your Go needs.
 
 If we get enough people to use this custom service, and show support for it, we might be able to convince dotCloud to add native support for Go. So let us know if you use it, and if you want dotCloud to offer a native Go service. 
 
@@ -12,7 +12,8 @@ This is still very early beta so use with caution, and let us know if you have a
 
 Version
 =======
-GO: 1.1
+
+Go v1.1.1
 
 How to use
 ==========
@@ -20,10 +21,10 @@ How to use
     
     $  git clone git://github.com/kencochrane/golang-on-dotcloud.git
 
-2. Put your GO source code under the ``src`` directory.
+2. Put your Go source code under the ``src`` directory.
 
 3. Change the ``dotcloud.yml``
-    a. Change the ``build_package`` config variable, to the name of your GO package
+    a. Change the ``build_package`` config variable, to the name of your Go package
     b. Change the ``processes`` so that you can run the correct processes
     c. Add or remove ``ports`` depending on your application needs.
 
