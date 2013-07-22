@@ -7,7 +7,7 @@ BUILDERDIR="$(dirname "$0")"
 # variables needed later.
 start_dir=`pwd`
 go_install_dir="$HOME/go"
-go_download_url="https://go.googlecode.com/files/go1.1.linux-amd64.tar.gz"
+go_download_url="https://go.googlecode.com/files/go1.1.1.linux-amd64.tar.gz"
 
 # functions
 msg() {
